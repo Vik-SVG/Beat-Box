@@ -35,9 +35,16 @@ dependencies {
 
     testImplementation 'junit:junit:4.13'
     testImplementation 'androidx.test.ext:junit:1.1.1'
-    testImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     testImplementation 'org.hamcrest:hamcrest:2.2'
-
     testImplementation 'org.mockito:mockito-core:2.7.22'
+
+
+    //androidtestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
+    //androidtestImplementation 'com.android.support.test.espresso:espresso-web:3.0.2'
+
+
     androidTestImplementation 'org.mockito:mockito-android:2.7.22'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
 }

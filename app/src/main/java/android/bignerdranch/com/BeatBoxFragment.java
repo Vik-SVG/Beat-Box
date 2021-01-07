@@ -9,15 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 
 import java.util.List;
+
+import static android.widget.SeekBar.*;
 
 
 public class BeatBoxFragment extends Fragment {
@@ -27,6 +28,7 @@ public class BeatBoxFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private BeatBox mBeatBox;
+    private String mSpeedRate;
 
     // TODO: Rename and change types of parameters
 
@@ -58,12 +60,47 @@ public class BeatBoxFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FragmentBeatBoxBinding binding = DataBindingUtil
+        final FragmentBeatBoxBinding binding = DataBindingUtil
                 .inflate(inflater, R.layout.fragment_beat_box, container, false);
 
         binding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         binding.recyclerView.setAdapter(new SoundAdapter(mBeatBox.getSounds()));
 
+        int maxSeekBarSpeed = binding.seekBarPlaybackSpeed.getMax();
+        binding.playbackSpeed.setText("Speed is " + maxSeekBarSpeed+"%");
+
+        binding.seekBarPlaybackSpeed.setProgress(maxSeekBarSpeed /2);
+        binding.seekBarPlaybackSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                float result;
+                if (progress < seekBar.getMax() / 2) {
+                    result = progress * 0.01f + 0.5f;
+                    mBeatBox.setRate(result);
+                } else {
+                    result = progress * 0.02f;
+                    mBeatBox.setRate(result);
+                }
+                mSpeedRate = (int)(result * 100) + "%";
+                binding.playbackSpeed.setText("Speed is " + mSpeedRate);
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar){
+
+                // mSpeedRate = (String.valueOf(seekBar.getProgress()));
+
+            }
+
+
+        });
         return binding.getRoot();
     }
 
